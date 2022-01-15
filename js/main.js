@@ -5,7 +5,7 @@ let rockets = [];
 let buildings = [];
 let damage = 1;
 let hits = 0;
-let asteroidsLeft = 50;
+let asteroidsLeft = 100;
 let ammo = 100;
 let maxAmmo = 500;
 
@@ -85,7 +85,7 @@ class Asteroid {
     this.size = random(30, 40);
     this.y = 100
     this.x = -100;
-    this.speed = random(1, 3);
+    this.speed = random(2, 3);
     this.angle = random(0, 359);
   }
 
