@@ -25,3 +25,11 @@ footer{
   color: white;
   text-align: center;
 }
+li{
+  color: rgb(230, 36, 68);
+  padding-left: 700px;
+  list-style-type: none;
+}
+a{
+  padding-right: 900px;
+}
