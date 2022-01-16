@@ -250,7 +250,7 @@ function draw() {
   } else {
     statusBar();
   }
-  if (asteroidsLeft == 0) {
+  if (asteroidsLeft == 0 || timeAlive == 60) {
     noLoop();
     background(100, 215, 84, 200);
     textSize(50);
