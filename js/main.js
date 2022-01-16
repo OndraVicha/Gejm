@@ -229,7 +229,7 @@ function draw() {
   if (time % 30 == 0) {
     asteroids.push(new Asteroid());
   }
-  if (time % 60 == 0 && timeAlive == 15 || timeAlive == 30 || timeAlive == 45) {
+  if (time % 60 == 0 && timeAlive == 15 || time % 60 == 0 && timeAlive == 30 || time % 60 == 0 && timeAlive == 45) {
     scrap.push(new Scrap());
     
   }
