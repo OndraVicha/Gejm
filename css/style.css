@@ -1,8 +1,11 @@
 html, body {
   margin: 0 auto;
   padding: 0; 
-  background-image: url("../img/background.png"); 
+  background-image: url("../img/background2.png"); 
+  background-position: center;
+  background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
 }
 canvas {
   display: block;
@@ -17,10 +20,7 @@ h1 {
   color: rgb(250, 221, 56);
   text-align: center;
 }
-.jumbotron {
-  background-image: url("../img/background.png");
-  background-size: cover;
-}
+
 footer{
   color: white;
   text-align: center;
