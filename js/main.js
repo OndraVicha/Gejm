@@ -175,10 +175,10 @@ function statusBar() {
   textStyle(BOLD);
   fill(color(200));
   
-  text(`Asteroids Left: ${asteroidsLeft}`, 500, height - 15);
+  text(`Asteroids Left: ${asteroidsLeft}`, 400, height - 15);
   text(`HP: ${hp} `, 50, height - 15);
-  text(`Ammo: ${Math.round(ammo / 5)} `, 300, height - 15);
-  text(`Time Alive: ${timeAlive}`, 750, height - 15);
+  text(`Ammo: ${Math.round(ammo / 5)} `, 200, height - 15);
+  text(`Time Alive: ${timeAlive}`, 700, height - 15);
 }
 
 
