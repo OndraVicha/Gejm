@@ -177,7 +177,7 @@ function statusBar() {
   
   text(`Asteroids Left: ${asteroidsLeft}`, 400, height - 15);
   text(`HP: ${hp} `, 50, height - 15);
-  text(`Ammo: ${Math.round(ammo / 5)} `, 200, height - 15);
+  text(`Ammo: ${Math.round(ammo / 6.5)} `, 200, height - 15);
   text(`Time Alive: ${timeAlive} seconds`, 700, height - 15);
 }
 
