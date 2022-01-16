@@ -1,8 +1,7 @@
-let canvas, ship, shipImage, asteroidImage, blastImage;
+let canvas, ship, shipImage, asteroidImage;
 let time = 0;
 let asteroids = [];
 let rockets = [];
-let buildings = [];
 let damage = 1;
 let hits = 0;
 let asteroidsLeft = 100;
