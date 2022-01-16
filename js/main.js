@@ -1,25 +1,46 @@
-let canvas, ship, shipImage, asteroidImage, laserShotImage;
+let canvas, ship, shipImage, asteroid1Image, asteroid2Image, laserShotImage;
 let time = 0;
 let asteroids = [];
 let rockets = [];
 let damage = 1;
 let hits = 0;
 let asteroidsLeft = 100;
-let ammo = 100;
-let maxAmmo = 500;
+let ammo = 40;
+let maxAmmo = 20;
 let angle = 0;
+let timeAlive = 0;
+let hp = 3;
 
 function naboje() {
+  if (ammo < maxAmmo && ammo != 30){
   ammo++;
+  }
 }
 
 setInterval(function () {
   naboje()
 }, 50);
 
+function timeAliveShip (){
+ timeAlive + 1;
+ fill(color(30, 30, 30, 127));
+  rect(150, height + 40, width, 40);
+  strokeWeight(0);
+  textSize(20);
+  textStyle(BOLD);
+  fill(color(200));
+  
+  text(`Time Alive: ${timeAlive}`, 150, height - 15);
+}
+
+setInterval(function () {
+  timeAlive++;
+}, 1000);
+
 function preload() {
   shipImage = loadImage("img/ufo.png");
-  asteroidImage = loadImage("img/asteroid.png");
+  asteroid1Image = loadImage("img/asteroid1.png");
+  asteroid2Image = loadImage("img/asteroid2.jpg");
   backgroundImage = loadImage("img/background.png");
   laserShotImage = loadImage("img/lasershot.png");
 }
@@ -70,7 +91,7 @@ class SpaceShip {
     this.move();
     push();
     translate(this.x , this.y);
-    image(shipImage, 0, 0, 50, 50);
+    image(shipImage, -45, 0, 50, 50);
     pop();
   }
 }
@@ -78,14 +99,19 @@ class SpaceShip {
 class Asteroid {
   constructor() {
     this.size = 40;
-    this.y = random(100,200);
+    this.y = random(0,200);
     this.x = -100;
-    this.speed = random(1, 3);
+    this.speed = random(2, 4);
     this.angle = random(0, 359);
   }
-
+  asteroidHeigh() {
+    setInterval(function(){
+      this.y += random (-10,10);
+    }, 10);
+  }
   move() {
     this.x += this.speed;
+    this.y == this.speed;
     this.angle += this.speed;
   }
 
@@ -106,8 +132,15 @@ class Asteroid {
     push();
     translate(this.x - this.size / 2, this.y + this.size / 2);
     rotate(((2 * PI) / 360) * this.angle);
-    image(asteroidImage, +this.size / 2, + this.size / 2, this.size, this.size);
+    image(asteroid1Image, -this.size / 2, - this.size / 2, this.size, this.size);
+    this.asteroidHeigh();
     pop();
+    /*this.move();
+    push();
+    translate(this.x - this.size / 2, this.y + this.size / 2);
+    rotate(((2 * PI) / 360) * this.angle);
+    image(asteroid2Image, +this.size / 2, + this.size / 2, this.size, this.size);
+    pop();*/
   }
 }
 
@@ -141,11 +174,14 @@ function statusBar() {
   textSize(20);
   textStyle(BOLD);
   fill(color(200));
-  text(`Hits: ${hits}`, 100, height - 15);
-  text(`Asteroids Left: ${asteroidsLeft}`, 700, height - 15);
-  text(`HP: ${damage} `, 450, height - 15);
-
+  
+  text(`Asteroids Left: ${asteroidsLeft}`, 500, height - 15);
+  text(`HP: ${hp} `, 50, height - 15);
+  text(`Ammo: ${Math.round(ammo / 5)} `, 300, height - 15);
+  text(`Time Alive: ${timeAlive}`, 750, height - 15);
 }
+
+
 
 
 function centerCanvas() {
@@ -166,7 +202,7 @@ function draw() {
   background(backgroundImage);
   ship.draw();
 
-  if (time % 120 == 0) {
+  if (time % 30 == 0) {
     asteroids.push(new Asteroid());
   }
 
@@ -174,6 +210,7 @@ function draw() {
     asteroid.draw();
     if (ship.detectCollision(asteroid)) {
       damage += asteroid.size;
+      hp--;
       array.splice(index, 1);
     }
 
@@ -202,12 +239,12 @@ function draw() {
       arr.splice(idx, 1);
     }
   });
-  if (round(damage) > 1) {
+  if (round(hp) < 1) {
     noLoop();
     background(100, 0, 0, 200);
     textSize(50);
     fill(255, 0, 0, 200);
-    text('GAME IS OVER', width / 2 - 200, height / 2);
+    text('GAME OVER', width / 2 - 200, height / 2);
     damage = 0;
     statusBar();
   } else {
