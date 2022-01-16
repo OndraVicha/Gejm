@@ -208,7 +208,7 @@ function draw() {
     background(100, 0, 0, 200);
     textSize(50);
     fill(255, 0, 0, 200);
-    text('GAME IS OVER', width / 2 - 200, height / 2);
+    text('GAME OVER', width / 2 - 200, height / 2);
     damage = 0;
     statusBar();
   } else {
