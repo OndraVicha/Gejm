@@ -1,4 +1,4 @@
-let canvas, ship, shipImage, asteroidImage;
+let canvas, ship, shipImage, asteroidImage, laserShotImage;
 let time = 0;
 let asteroids = [];
 let rockets = [];
@@ -7,6 +7,7 @@ let hits = 0;
 let asteroidsLeft = 100;
 let ammo = 100;
 let maxAmmo = 500;
+let angle = 0;
 
 function naboje() {
   ammo++;
@@ -15,18 +16,20 @@ function naboje() {
 setInterval(function () {
   naboje()
 }, 50);
+
 function preload() {
   shipImage = loadImage("img/ufo.png");
   asteroidImage = loadImage("img/asteroid.png");
   backgroundImage = loadImage("img/background.png");
+  laserShotImage = loadImage("img/lasershot.png");
 }
 
 class SpaceShip {
   constructor(posX, posY) {
     this.x = posX;
     this.y = posY;
-    this.w = 150;
-    this.h = 100;
+    this.w = 50;
+    this.h = 50;
     this.angle = 0;
   }
 
@@ -42,12 +45,6 @@ class SpaceShip {
     }
     if (keyIsDown(DOWN_ARROW)) {
       if (this.y < height - 40 - this.h) this.y += 5;
-    }
-    if (keyIsDown(33)) {
-      this.angle -= 10;
-    }
-    if (keyIsDown()) {
-      this.angle += 10;
     }
     if (keyIsDown(32) && ammo > 0) {
       if (time % (10 + round(damage / 10)) == 0)
@@ -72,19 +69,18 @@ class SpaceShip {
   draw() {
     this.move();
     push();
-    translate(this.x + 100, this.y + 60);
-    rotate(((2 * PI) / 360) * this.angle);
-    image(shipImage, -20, -40, 50, 50);
+    translate(this.x , this.y);
+    image(shipImage, 0, 0, 50, 50);
     pop();
   }
 }
 
 class Asteroid {
   constructor() {
-    this.size = random(30, 40);
-    this.y = 100
+    this.size = 40;
+    this.y = random(100,200);
     this.x = -100;
-    this.speed = random(2, 3);
+    this.speed = random(1, 3);
     this.angle = random(0, 359);
   }
 
@@ -110,7 +106,7 @@ class Asteroid {
     push();
     translate(this.x - this.size / 2, this.y + this.size / 2);
     rotate(((2 * PI) / 360) * this.angle);
-    image(asteroidImage, +this.size / 2, -this.size / 2, this.size, this.size);
+    image(asteroidImage, +this.size / 2, + this.size / 2, this.size, this.size);
     pop();
   }
 }
@@ -119,7 +115,7 @@ class Rocket {
   constructor(x, y, angle) {
     this.size = 5;
     this.y = y;
-    this.x = x;
+    this.x = x-20;
     this.angle = angle - 180;
     this.speed = 5;
   }
@@ -131,7 +127,10 @@ class Rocket {
 
   draw() {
     this.move();
-    circle(this.x, this.y, this.size);
+    push();
+    translate(this.x-40 , this.y);
+    image(laserShotImage, 0, -2, 40, 5);
+    pop();
   }
 }
 
@@ -208,7 +207,7 @@ function draw() {
     background(100, 0, 0, 200);
     textSize(50);
     fill(255, 0, 0, 200);
-    text('GAME OVER', width / 2 - 200, height / 2);
+    text('GAME IS OVER', width / 2 - 200, height / 2);
     damage = 0;
     statusBar();
   } else {
