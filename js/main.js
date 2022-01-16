@@ -1,7 +1,8 @@
-let canvas, ship, shipImage, asteroid1Image, asteroid2Image, laserShotImage;
+let canvas, ship, shipImage, asteroid1Image, asteroid2Image,scrapImage, laserShotImage;
 let time = 0;
 let asteroids = [];
 let rockets = [];
+let scrap = [];
 let damage = 1;
 let hits = 0;
 let asteroidsLeft = 50;
@@ -23,14 +24,7 @@ setInterval(function () {
 
 function timeAliveShip (){
  timeAlive + 1;
- fill(color(30, 30, 30, 127));
-  rect(150, height + 40, width, 40);
-  strokeWeight(0);
-  textSize(20);
-  textStyle(BOLD);
-  fill(color(200));
-  
-  text(`Time Alive: ${timeAlive}`, 150, height - 15);
+ 
 }
 
 setInterval(function () {
@@ -43,6 +37,7 @@ function preload() {
   asteroid2Image = loadImage("img/asteroid2.jpg");
   backgroundImage = loadImage("img/background.png");
   laserShotImage = loadImage("img/lasershot.png");
+  scrapImage = loadImage("img/scrap.png");
 }
 
 class SpaceShip {
@@ -70,7 +65,7 @@ class SpaceShip {
     if (keyIsDown(32) && ammo > 0) {
       if (time % (10 + round(damage / 10)) == 0)
         rockets.push(new Rocket(this.x + this.w / 2, this.y + this.h / 2, this.angle));
-      ammo--;
+       ammo-- ;
     }
   }
 
@@ -86,12 +81,47 @@ class SpaceShip {
       asteroid.size
     );
   }
+  detectCollision(scrap) {
+    return collideRectRect(
+      this.x,
+      this.y,
+      this.w,
+      this.h,
+      scrap.x,
+      scrap.y,
+      scrap.size,
+      scrap.size
+    );
+  }
 
   draw() {
     this.move();
     push();
     translate(this.x , this.y);
     image(shipImage, -45, 0, 50, 50);
+    pop();
+  }
+}
+
+class Scrap {
+  constructor() {
+    this.size = 40;
+    this.y = random(0,200);
+    this.x = -100;
+    this.speed = random(2, 4);
+    this.angle = random(0, 359);
+  }
+  move() {
+    this.x += this.speed;
+    this.y == this.speed;
+    this.angle += this.speed;
+  }
+  draw() {
+    this.move();
+    push();
+    translate(this.x - this.size / 2, this.y + this.size / 2);
+    rotate(((2 * PI) / 360) * this.angle);
+    image(scrapImage, -this.size / 2, - this.size / 2, this.size, this.size);
     pop();
   }
 }
@@ -135,12 +165,6 @@ class Asteroid {
     image(asteroid1Image, -this.size / 2, - this.size / 2, this.size, this.size);
     this.asteroidHeigh();
     pop();
-    /*this.move();
-    push();
-    translate(this.x - this.size / 2, this.y + this.size / 2);
-    rotate(((2 * PI) / 360) * this.angle);
-    image(asteroid2Image, +this.size / 2, + this.size / 2, this.size, this.size);
-    pop();*/
   }
 }
 
@@ -205,7 +229,10 @@ function draw() {
   if (time % 30 == 0) {
     asteroids.push(new Asteroid());
   }
-
+  if (time % 60 == 0 && timeAlive == 15 || timeAlive == 30 || timeAlive == 45) {
+    scrap.push(new Scrap());
+    
+  }
   asteroids.forEach(function (asteroid, index, array) {
     asteroid.draw();
     if (ship.detectCollision(asteroid)) {
@@ -227,6 +254,14 @@ function draw() {
       }
     });
   });
+
+  scrap.forEach(function(scrap,index1,array1){
+    scrap.draw();
+    if (ship.detectCollision(scrap)){
+      array1.splice(index1, 1);
+      hp++;
+    }
+  })
 
   rockets.forEach(function (rocket, idx, arr) {
     rocket.draw();
