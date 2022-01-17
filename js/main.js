@@ -1,3 +1,4 @@
+/*Vytvoření proměnných*/
 let canvas, ship, shipImage, asteroid1Image, asteroid2Image,scrapImage, laserShotImage;
 let time = 0;
 let asteroids = [];
@@ -11,7 +12,7 @@ let maxAmmo = 30;
 let angle = 0;
 let timeAlive = 0;
 let hp = 3;
-
+/*Tyhle funkle se postarají o obnovování nábojů a přidávání časů*/
 function naboje() {
   if (ammo < maxAmmo && ammo != 30){
   ammo++;
@@ -39,7 +40,7 @@ function preload() {
   laserShotImage = loadImage("img/lasershot.png");
   scrapImage = loadImage("img/scrap.png");
 }
-
+/*Třída pro Nakreslení/Ovládání/Kolize vesmírné lodi*/
 class SpaceShip {
   constructor(posX, posY) {
     this.x = posX;
@@ -102,7 +103,7 @@ class SpaceShip {
     pop();
   }
 }
-
+/*Třída pro Nakreslení/Pohyb/Kolize scrapu který přidá 1 život*/
 class Scrap {
   constructor() {
     this.size = 40;
@@ -125,7 +126,7 @@ class Scrap {
     pop();
   }
 }
-
+/*Třída pro Nakreslení/Pohyb/Kolize asteroidů které odeberou 1 život*/
 class Asteroid {
   constructor() {
     this.size = 40;
@@ -167,7 +168,7 @@ class Asteroid {
     pop();
   }
 }
-
+/*Třída pro Nakreslení/Pohyb/Kolize raketek které jsou vystřeleny z vesmírné lodě a ničí asteroidy*/
 class Rocket {
   constructor(x, y, angle) {
     this.size = 5;
@@ -190,7 +191,7 @@ class Rocket {
     pop();
   }
 }
-
+/*Tahle funkce ukazuje a napozicuje všechny důležité informace*/
 function statusBar() {
   fill(color(30, 30, 30, 127));
   rect(0, height - 40, width, 40);
@@ -220,7 +221,7 @@ function setup() {
   ship = new SpaceShip(width / 2, height / 2);
 
 }
-
+/*Funkce vykreslí všechny obrázky*/
 function draw() {
   time++;
   background(backgroundImage);
@@ -229,10 +230,12 @@ function draw() {
   if (time % 30 == 0) {
     asteroids.push(new Asteroid());
   }
+  /*Zajišťuje aby se každých 15 vteřin objevil scrap který přidá 1 život*/
   if (time % 60 == 0 && timeAlive == 15 || time % 60 == 0 && timeAlive == 30 || time % 60 == 0 && timeAlive == 45) {
     scrap.push(new Scrap());
     
   }
+  /*Co se stane když asteroid narazí do vesmírné lodi*/
   asteroids.forEach(function (asteroid, index, array) {
     asteroid.draw();
     if (ship.detectCollision(asteroid)) {
@@ -244,7 +247,7 @@ function draw() {
     if (asteroid.y > height) {
       array.splice(index, 1);
     }
-
+/*Co se stane když raketa narazí do asteroidu*/
     rockets.forEach(function (rocket, idx, arr) {
       if (asteroid.detectCollision(rocket)) {
         hits++;
@@ -254,7 +257,7 @@ function draw() {
       }
     });
   });
-
+/*Co se stane když vesmírná loď narazí do scrapu*/
   scrap.forEach(function(scrap,index1,array1){
     scrap.draw();
     if (ship.detectCollision(scrap)){
@@ -266,14 +269,12 @@ function draw() {
   rockets.forEach(function (rocket, idx, arr) {
     rocket.draw();
     if (
-      rocket.y > height ||
-      rocket.y < 0 ||
-      rocket.x < 0 ||
-      rocket.x > width
+      rocket.y > height || rocket.y < 0 || rocket.x < 0 || rocket.x > width
     ) {
       arr.splice(idx, 1);
     }
   });
+  /*Co se objeví když hráč prohraje/vyhraje*/
   if (round(hp) < 1) {
     noLoop();
     background(100, 0, 0, 200);
