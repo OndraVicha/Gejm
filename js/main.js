@@ -4,6 +4,7 @@ let time = 0;
 let asteroids = [];
 let rockets = [];
 let scrap = [];
+let damage = 1;
 let hits = 0;
 let asteroidsLeft = 50;
 let ammo = 40;
@@ -63,7 +64,7 @@ class SpaceShip {
       if (this.y < height - 40 - this.h) this.y += 5;
     }
     if (keyIsDown(32) && ammo > 0) {
-      if (time % (10 + round()) == 0)
+      if (time % (10 + round(damage / 10)) == 0)
         rockets.push(new Rocket(this.x + this.w / 2, this.y + this.h / 2, this.angle));
        ammo-- ;
     }
@@ -238,7 +239,7 @@ function draw() {
   asteroids.forEach(function (asteroid, index, array) {
     asteroid.draw();
     if (ship.detectCollision(asteroid)) {
-      
+      damage += asteroid.size;
       hp--;
       array.splice(index, 1);
     }
@@ -280,7 +281,7 @@ function draw() {
     textSize(50);
     fill(255, 0, 0, 200);
     text('GAME OVER', width / 2 - 150, height / 2);
-    
+    damage = 0;
     statusBar();
   } else {
     statusBar();
