@@ -4,7 +4,6 @@ let time = 0;
 let asteroids = [];
 let rockets = [];
 let scrap = [];
-let damage = 1;
 let hits = 0;
 let asteroidsLeft = 50;
 let ammo = 40;
@@ -239,7 +238,7 @@ function draw() {
   asteroids.forEach(function (asteroid, index, array) {
     asteroid.draw();
     if (ship.detectCollision(asteroid)) {
-      damage += asteroid.size;
+      
       hp--;
       array.splice(index, 1);
     }
@@ -281,7 +280,7 @@ function draw() {
     textSize(50);
     fill(255, 0, 0, 200);
     text('GAME OVER', width / 2 - 150, height / 2);
-    damage = 0;
+    
     statusBar();
   } else {
     statusBar();
