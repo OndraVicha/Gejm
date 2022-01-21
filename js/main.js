@@ -63,7 +63,7 @@ class SpaceShip {
       if (this.y < height - 40 - this.h) this.y += 5;
     }
     if (keyIsDown(32) && ammo > 0) {
-      if (time % (10 + round(damage / 10)) == 0)
+      if (time % (10 + round()) == 0)
         rockets.push(new Rocket(this.x + this.w / 2, this.y + this.h / 2, this.angle));
        ammo-- ;
     }
